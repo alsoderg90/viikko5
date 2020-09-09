@@ -14,9 +14,6 @@ const App = () => {
   const [message, setMessage] = useState('')
   const [messageClass, setMessageClass] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
   const [blogsVisible, setBlogsVisible] = useState(false)
 
   useEffect(() => {
@@ -59,14 +56,9 @@ const App = () => {
     }
   }
 
-   const newBlog = (event) => {
-    event.preventDefault()
-    const newBlog = {title: title, author: author, url: url}
-    blogService.create(newBlog).then(blog => {
+  const addBlog= (blogObject) => {
+    blogService.create(blogObject).then(blog => {
     setBlogs(blogs.concat(blog))
-    setUrl('')
-    setTitle('')
-    setAuthor('')
     setBlogsVisible(false)
     setMessage(`A new blog: ${blog.title} by ${blog.author} added`)
     setMessageClass('gg')
@@ -94,9 +86,9 @@ const App = () => {
           <button onClick={() => setBlogsVisible(true)}> Create </button>
         </div>
         <div style={showWhenVisible}>
-        <BlogForm title={title} author={author} url={url} 
-        setTitle={({target}) => {setTitle(target.value)}} setAuthor={({target}) => {setAuthor(target.value)}} setUrl={({target}) => {setUrl(target.value)}} 
-        newBlog={(event) => {newBlog(event)}} setBlogsVisible={setBlogsVisible}/>
+        <BlogForm 
+        addBlog={addBlog}
+        setBlogsVisible={setBlogsVisible}/>
         </div>
     </div> 
   )
