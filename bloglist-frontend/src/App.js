@@ -72,7 +72,7 @@ const App = () => {
   const blogForm = () => {
     const hideWhenVisible = { display: blogsVisible ? 'none' : '' }
     const showWhenVisible = { display: blogsVisible ? '' : 'none' }
-
+    const sortedList = blogs.sort((a,b) => (a.likes < b.likes) ? 1 : -1)
     return (
 
     <div> 
@@ -81,7 +81,8 @@ const App = () => {
             window.localStorage.clear() 
             setUser(null)}}> Log out </button>
           </p> 
-          { blogs.map(blog => <Blog key={blog.id} blog={blog}/>) }
+          
+          { sortedList.map(blog => <Blog key={blog.id} blog={blog}/>) }
         <div style={hideWhenVisible}>
           <button onClick={() => setBlogsVisible(true)}> Create </button>
         </div>
