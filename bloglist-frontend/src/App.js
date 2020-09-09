@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login' 
+import LoginForm from './components/Login'
+import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,30 +17,13 @@ const App = () => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
+  const [blogsVisible, setBlogsVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
   }, [])
-
-
-  const Notification = ({message, messageClass}) => {
-    if (message !== null && messageClass !== '') {
-      if (messageClass === 'error') {
-       return (
-            <div className='error'>{message}</div>
-       ) 
-      }
-      else {
-        return (
-          <div className='gg'>{message}</div>
-        )
-      }
-    }
-    else return null
-
-  }
 
   useEffect (() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -47,6 +33,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   },[])
+
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -72,32 +59,7 @@ const App = () => {
     }
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <h2>Log in to application</h2>
-      {console.log(message,messageClass)}
-      <Notification message={message} messageClass={messageClass} />
-        <div> Username
-          <input
-          type ="username"
-          value={username}
-          name='Username'
-          onChange = {({target}) => {setUsername(target.value)}}
-          />
-        </div>
-        <div> Password
-          <input 
-          type = "password"
-          value = {password}
-          name = "password"
-          onChange = {({target}) => {setPassword(target.value)}}
-          />
-        </div>
-        <button type="submit">Login</button>
-    </form>
-  )
-
-  const newBlog = (event) => {
+   const newBlog = (event) => {
     event.preventDefault()
     const newBlog = {title: title, author: author, url: url}
     blogService.create(newBlog).then(blog => {
@@ -105,6 +67,7 @@ const App = () => {
     setUrl('')
     setTitle('')
     setAuthor('')
+    setBlogsVisible(false)
     setMessage(`A new blog: ${blog.title} by ${blog.author} added`)
     setMessageClass('gg')
     setTimeout(() => {
@@ -114,29 +77,37 @@ const App = () => {
     })
   }
 
-  const blogForm = () => (
+  const blogForm = () => {
+    const hideWhenVisible = { display: blogsVisible ? 'none' : '' }
+    const showWhenVisible = { display: blogsVisible ? '' : 'none' }
+
+    return (
+
     <div> 
         <h2>Blogs</h2>
-         {console.log(message,messageClass)}
-          <Notification message={message} messageClass={messageClass} />
           <p>{user.name} logged in <button onClick = {() => {
             window.localStorage.clear() 
             setUser(null)}}> Log out </button>
           </p> 
           { blogs.map(blog => <Blog key={blog.id} blog={blog}/>) }
-        <h2>Create new</h2>
-        <form onSubmit={newBlog}> 
-        <div> Title: <input type="text" value={title} name="title" onChange={({target}) => {setTitle(target.value)}}/></div> 
-        <div> Author: <input type="text" value={author} name="author" onChange={({target}) => {setAuthor(target.value)}}/></div> 
-        <div> Url: <input type="text" value={url} name="url" onChange={({target}) => {setUrl(target.value)}}/></div> 
-        <button type="submit"> Create </button>
-        </form>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setBlogsVisible(true)}> Create </button>
+        </div>
+        <div style={showWhenVisible}>
+        <BlogForm title={title} author={author} url={url} 
+        setTitle={({target}) => {setTitle(target.value)}} setAuthor={({target}) => {setAuthor(target.value)}} setUrl={({target}) => {setUrl(target.value)}} 
+        newBlog={(event) => {newBlog(event)}} setBlogsVisible={setBlogsVisible}/>
+        </div>
     </div> 
   )
+}
 
   return (
+    
     <div>
-      {user === null ? loginForm() :
+      <Notification message={message} messageClass={messageClass} />
+      {user === null ? <LoginForm username={username} password={password} setPassword={({target}) => {setPassword(target.value)}}
+                      setUsername={({target}) => {setUsername(target.value)}} handleLogin={(event) => {handleLogin(event)}} /> :
       blogForm()}
     </div>
   )
