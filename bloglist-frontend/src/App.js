@@ -70,6 +70,8 @@ const App = () => {
     })
   }
 
+
+
   const blogForm = () => {
     const hideWhenVisible = { display: blogsVisible ? 'none' : '' }
     const showWhenVisible = { display: blogsVisible ? '' : 'none' }

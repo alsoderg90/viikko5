@@ -10,12 +10,6 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
       author : blog.author,
       url : blog.url,
       likes : blog.likes +1,
-
-      /*     user : {
-          id : blog.user.id,
-          name : blog.user.name,
-          username : blog.user.username
-        } */
     }
     const updatedBlog = await blogService.update(blog.id,newBlog)
     const updatedBlogs = blogs.map(oldBlog => (oldBlog.id === updatedBlog.id) ? updatedBlog : oldBlog)
@@ -24,8 +18,6 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
   }
 
   const RemoveBlog = () => {
-
-    // console.log('blogin tekijä:',blog,'kirjautunut:', users.username)
     if (blog.user.username === users.username) return (
       <button onClick={() => {
         if (window.confirm(`Remove blog ${blog.title} by ${blog.author} ?`))
@@ -48,11 +40,11 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
   }
 
   const handleShow = () => {
-    {showAll(!allInfo)}
+    showAll(!allInfo)
   }
 
   const handleVote = () => {
-    {voteBlog(blog)}
+    voteBlog(blog)
   }
 
   if (allInfo === false)
@@ -68,16 +60,18 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
 
   else {
     return (
-      <div style={blogStyle}><div>
-        <p>{blog.title} <button onClick={handleShow}> Hide </button></p>
-        <p> {blog.author} </p>
-        {/*eslint-disable-next-line no-unused-vars */}
-        <p> Likes {blog.likes} <button onClick={handleVote}> Vote</button> </p>
-        <p> {blog.url}</p>
-        <p> {blog.user.name}</p>
-        {RemoveBlog()}
-      </div>
-      </div>
+      <li className='all'>
+        <div style={blogStyle}><div>
+          <p>{blog.title} <button onClick={handleShow}> Hide </button></p>
+          <p> {blog.author} </p>
+          {/*eslint-disable-next-line no-unused-vars */}
+          <p> Likes {blog.likes} <button onClick={handleVote}> Vote</button> </p>
+          <p> {blog.url}</p>
+          <p> {blog.user.name}</p>
+          {RemoveBlog()}
+        </div>
+        </div>
+      </li>
     )
   }
 }

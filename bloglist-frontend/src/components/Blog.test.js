@@ -16,15 +16,15 @@ test('renders content', () => {
     }
   }
 
-
   const component = render(
     <Blog blog={blog}
     />
   )
 
-  expect(component.container).toHaveTextContent(
-    'Component testing is done with react-testing-library by jest-dom'
-  )
+  component.debug()
+
+  expect(component.container).toHaveTextContent('Component testing is done with react-testing-library')
+  expect(component.container).toHaveTextContent('jest-dom')
 })
 
 test('button show url & likes-test', async () => {
@@ -36,7 +36,7 @@ test('button show url & likes-test', async () => {
     title: 'Component testing is done with react-testing-library',
     author: 'jest-dom',
     url: 'www.fullstackopen.com',
-    likes: 5,
+    likes: 120,
     user : {
       username: 'alexander',
       id: 123,
@@ -47,16 +47,16 @@ test('button show url & likes-test', async () => {
   const mockHandler = jest.fn()
 
   const component = render(
-    <Blog blog={blog} user={blog.user} users={users}
-      handleShow={mockHandler}
+    <Blog blog={blog} users={users} setBlogs={mockHandler}
+
     />
   )
 
   const button = component.getByText('View')
   fireEvent.click(button)
 
-  expect(component.container).toHaveTextContent(
-    'www.fullstackopen.com',5)
+  expect(component.container).toHaveTextContent('www.fullstackopen.com')
+  expect(component.container).toHaveTextContent(120)
 })
 
 test('clicking the button twice calls event handler twice', async () => {
@@ -68,7 +68,7 @@ test('clicking the button twice calls event handler twice', async () => {
     title: 'Component testing is done with react-testing-library',
     author: 'jest-dom',
     url: 'www.fullstackopen.com',
-    likes: 5,
+    likes: 112452,
     user : {
       username: 'alexander',
       id: 123,
@@ -76,23 +76,31 @@ test('clicking the button twice calls event handler twice', async () => {
     }
   }
 
+  const blog2 = {
+    title: 'Component testing is done with react-testing-library',
+    author: 'jest-dom',
+    url: 'www.fullstackopen.com',
+    likes: 112452,
+    user : {
+      username: 'alexander',
+      id: 123,
+      name: 'allu',
+    }
+  }
+
+  const blogs = [blog,blog2]
+
   const mockHandler = jest.fn()
 
   const component = render(
-    <Blog blog={blog} user={blog.user} users={users}
-      handleShow={mockHandler} handleVote={mockHandler}
+    <Blog blog={blog} users={users} setBlogs={mockHandler} blogs={blogs}
     />
   )
 
-  const button = component.getByText('View')
-  fireEvent.click(button)
+  const button3 = component.getByText('View')
+  fireEvent.click(button3)
+
   const button2 = component.getByText('Vote')
   fireEvent.click(button2)
-  fireEvent.click(button2)
-  fireEvent.click(button2)
-  fireEvent.click(button2)
-
-  /*expect(component.container).toHaveTextContent(
-    'Delete') */
   expect(mockHandler.mock.calls).toHaveLength(1)
 })
