@@ -17,7 +17,7 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
           username : blog.user.username
         } */
     }
-    const updatedBlog = await blogService.update(blog.id.toString(),newBlog)
+    const updatedBlog = await blogService.update(blog.id,newBlog)
     const updatedBlogs = blogs.map(oldBlog => (oldBlog.id === updatedBlog.id) ? updatedBlog : oldBlog)
     setBlogs(updatedBlogs)
     console.log('update logi:', newBlog)
@@ -29,7 +29,7 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
     if (blog.user.username === users.username) return (
       <button onClick={() => {
         if (window.confirm(`Remove blog ${blog.title} by ${blog.author} ?`))
-          blogService.remove(blog.id.toString())
+          blogService.remove(blog.id)
         setBlogs(blogs.filter(savedblog => savedblog.id !== blog.id))
       }}> Delete
       </button>
@@ -51,6 +51,10 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
     {showAll(!allInfo)}
   }
 
+  const handleVote = () => {
+    {voteBlog(blog)}
+  }
+
   if (allInfo === false)
     return (
       <li className='blog'>
@@ -65,10 +69,10 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
   else {
     return (
       <div style={blogStyle}><div>
-        <p>{blog.title} <button onClick={() => {showAll(!allInfo)} }> Hide </button></p>
+        <p>{blog.title} <button onClick={handleShow}> Hide </button></p>
         <p> {blog.author} </p>
         {/*eslint-disable-next-line no-unused-vars */}
-        <p> Likes {blog.likes} <button onClick={(event) => {voteBlog(blog)}}> Vote</button> </p>
+        <p> Likes {blog.likes} <button onClick={handleVote}> Vote</button> </p>
         <p> {blog.url}</p>
         <p> {blog.user.name}</p>
         {RemoveBlog()}
