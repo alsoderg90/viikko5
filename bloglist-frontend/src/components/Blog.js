@@ -25,7 +25,7 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
 
   const RemoveBlog = () => {
 
-    console.log('blogin tekijä:',blog,'kirjautunut:', users.username)
+    // console.log('blogin tekijä:',blog,'kirjautunut:', users.username)
     if (blog.user.username === users.username) return (
       <button onClick={() => {
         if (window.confirm(`Remove blog ${blog.title} by ${blog.author} ?`))
@@ -47,13 +47,19 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
     marginBottom: 5
   }
 
+  const handleShow = () => {
+    {showAll(!allInfo)}
+  }
+
   if (allInfo === false)
     return (
-      <div style={blogStyle}><div>
-        {blog.title} by {blog.author}
-        <button onClick={() => {showAll(!allInfo)} }> View </button>
-      </div>
-      </div>
+      <li className='blog'>
+        <div style={blogStyle}><div>
+          {blog.title} by {blog.author}
+          <button onClick={handleShow}>View</button>
+        </div>
+        </div>
+      </li>
     )
 
   else {
