@@ -71,7 +71,6 @@ const App = () => {
   }
 
 
-
   const blogForm = () => {
     const hideWhenVisible = { display: blogsVisible ? 'none' : '' }
     const showWhenVisible = { display: blogsVisible ? '' : 'none' }
@@ -103,8 +102,11 @@ const App = () => {
 
     <div>
       <Notification message={message} messageClass={messageClass} />
-      {user === null ? <LoginForm username={username} password={password} setPassword={({ target }) => {setPassword(target.value)}}
-        setUsername={({ target }) => {setUsername(target.value)}} handleLogin={(event) => {handleLogin(event)}} /> :
+      {user === null ? <LoginForm username={username}
+        password={password} setPassword={({ target }) =>
+        {setPassword(target.value)}} setUsername={({ target }) =>
+        {setUsername(target.value)}} handleLogin={(event) =>
+        {handleLogin(event)}} /> :
         blogForm()}
     </div>
   )

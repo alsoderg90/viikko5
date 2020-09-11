@@ -19,7 +19,7 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
 
   const RemoveBlog = () => {
     if (blog.user.username === users.username) return (
-      <button onClick={() => {
+      <button id='remove' onClick={() => {
         if (window.confirm(`Remove blog ${blog.title} by ${blog.author} ?`))
           blogService.remove(blog.id)
         setBlogs(blogs.filter(savedblog => savedblog.id !== blog.id))
@@ -52,7 +52,7 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
       <li className='blog'>
         <div style={blogStyle}><div>
           {blog.title} by {blog.author}
-          <button onClick={handleShow}>View</button>
+          <button id='view' onClick={handleShow}>View</button>
         </div>
         </div>
       </li>
@@ -65,7 +65,7 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
           <p>{blog.title} <button onClick={handleShow}> Hide </button></p>
           <p> {blog.author} </p>
           {/*eslint-disable-next-line no-unused-vars */}
-          <p> Likes {blog.likes} <button onClick={handleVote}> Vote</button> </p>
+          <p> Likes {blog.likes} <button id='like' onClick={handleVote}> Vote</button> </p>
           <p> {blog.url}</p>
           <p> {blog.user.name}</p>
           {RemoveBlog()}
