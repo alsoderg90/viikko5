@@ -11,8 +11,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [blogs, setBlogs] = useState([])
-  const [message, setMessage] = useState('')
-  const [messageClass, setMessageClass] = useState('')
+  const [message, setMessage] = useState(null)
+  const [messageClass, setMessageClass] = useState(null)
   const [user, setUser] = useState(null)
   const [blogsVisible, setBlogsVisible] = useState(false)
 

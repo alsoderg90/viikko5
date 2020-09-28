@@ -18,7 +18,7 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
   }
 
   const RemoveBlog = () => {
-    if (blog.user.username === users.username) return (
+    return (
       <button id='remove' onClick={() => {
         if (window.confirm(`Remove blog ${blog.title} by ${blog.author} ?`))
           blogService.remove(blog.id)
@@ -26,7 +26,6 @@ const Blog = ({ blog, users, setBlogs,blogs }) => {
       }}> Delete
       </button>
     )
-    else return <p>moi</p>
   }
 
   const [allInfo, showAll] = useState(false)
